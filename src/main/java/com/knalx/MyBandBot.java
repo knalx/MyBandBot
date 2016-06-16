@@ -1,5 +1,7 @@
 package com.knalx;
 
+import com.knalx.commands.ChatCommand;
+import com.knalx.commands.NewBandCommand;
 import com.knalx.commands.RepCommand;
 import com.knalx.model.Repetition;
 import org.slf4j.Logger;
@@ -23,23 +25,25 @@ public class MyBandBot extends TelegramLongPollingBot {
 
     public static List<Repetition> repetitionList = new ArrayList<>();
 
-    public static volatile Map<String, RepCommand> repCommandList = new HashMap<>();
+    public static volatile Map<String, ChatCommand> chatCommandList = new HashMap<>();
 
     @Override
     public void onUpdateReceived(Update update) {
-        logger.debug(update.getMessage().getChatId().toString());
+        logger.debug(update.getMessage().getFrom().getFirstName() + "  " + update.getMessage().getChatId().toString());
         String chatId = update.getMessage().getChatId().toString();
-
-        if (repCommandList.containsKey(chatId)) {
-            RepCommand repCommand = repCommandList.get(chatId);
+        // если есть активный диалог в этом чате
+        if (chatCommandList.containsKey(chatId)) {
+            ChatCommand command = chatCommandList.get(chatId);
             if (update.getMessage().getText().equals(RepCommand.cancelButton)) {
-                repCommandList.remove(chatId);
-                sendMessageToClient(repCommand.handleCancel());
+                chatCommandList.remove(chatId);
+                sendMessageToClient(command.handleCancel());
                 return;
             }
-            sendMessageToClient(repCommand.handleRequest(update));
-            if (repCommand.getStage().equals(RepCommand.Stage.FINISHED)) {
-                repCommandList.remove(chatId);
+
+            sendMessageToClient(command.handleRequest(update));
+
+            if (command.isFinished()) {
+                chatCommandList.remove(chatId);
                 return;
             }
 
@@ -47,17 +51,15 @@ public class MyBandBot extends TelegramLongPollingBot {
 
         switch (update.getMessage().getText()) {
             case "/rep": {
-                RepCommand repCommand;
-                if (!repCommandList.containsKey(chatId)) {
-                    repCommand = new RepCommand(chatId);
-                    repCommandList.put(chatId, repCommand);
-                } else {
-                    repCommand = repCommandList.get(chatId);
-                }
-                sendMessageToClient(repCommand.handleRequest());
+                RepCommand repCommand = new RepCommand(chatId);
+                chatCommandList.put(chatId, repCommand);
+                sendMessageToClient(repCommand.handleRequest(update));
                 break;
             }
-            case "/init":{
+            case "/newband": {
+                NewBandCommand newBandCommand = new NewBandCommand();
+                chatCommandList.put(chatId, newBandCommand);
+                sendMessageToClient(newBandCommand.handleRequest(update));
                 break;
             }
         }

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by knalx on 13.06.16.
  */
-public class RepCommand {
+public class RepCommand implements ChatCommand {
 
     Logger logger = LoggerFactory.getLogger(RepCommand.class);
 
@@ -70,9 +70,9 @@ public class RepCommand {
         return sendMessage;
     }
 
-
-    public SendMessage handleRequest() {
-        return handleRequest(new Update());
+    @Override
+    public boolean isFinished() {
+        return stage.equals(Stage.FINISHED);
     }
 
 
