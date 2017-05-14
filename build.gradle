@@ -31,7 +31,11 @@ repositories {
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-jersey'
     compile 'org.springframework.boot:spring-boot-starter-ws'
-    compile 'com.github.rubenlagus:TelegramBots:v2.3.3.3'
+    compile 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+
+
+    compile 'com.github.rubenlagus:TelegramBots:2.4.4.5'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

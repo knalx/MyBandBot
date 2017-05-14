@@ -7,7 +7,16 @@ import java.util.Set;
  */
 public class Band {
     private String name;
+    private String test;
     private Set<Member> members;
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
 
     public String getName() {
         return name;

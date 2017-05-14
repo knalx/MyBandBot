@@ -116,7 +116,7 @@ public class RepCommand implements ChatCommand {
         replyKeyboardMarkup.setOneTimeKeyboad(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
-        sendMessage.setReplayMarkup(replyKeyboardMarkup);
+//        sendMessage.setReplayMarkup(replyKeyboardMarkup);
         sendMessage.setChatId(this.telegramChatId);
 
         return sendMessage;

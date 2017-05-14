@@ -86,7 +86,7 @@ public class NewBandCommand implements ChatCommand {
         replyKeyboardMarkup.setOneTimeKeyboad(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
-        sm.setReplayMarkup(replyKeyboardMarkup);
+//        sm.setReplayMarkup(replyKeyboardMarkup);
         sm.setText(text);
         return sm;
 
